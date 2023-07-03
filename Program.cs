@@ -1,7 +1,17 @@
+using Microsoft.EntityFrameworkCore;
+using RestaurantRaterMVC.Data;
+using RestaurantRaterMVC.Services.Restaurants;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+//between these () pulling Json and  the connection string default connection for sql pw
+builder.Services.AddDbContext<RestaurantDbContext>(options => options.UseSqlServer(
+    builder.Configuration.GetConnectionString("DefaultConnection")
+));
+
+builder.Services.AddScoped<IRestaurantService, RestaurantService>();
 
 var app = builder.Build();
 
