@@ -1,0 +1,52 @@
+@model IEnumerable<RestaurantListItem>
+    @{
+        ViewData["Title"] = "Restaurant Index";
+    }
+    
+    <h1>Restaurant Index</h1>
+    <p>
+        <a asp-action= "Create">Create Restaurant</a>
+    </p>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Name)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Score)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @item.Name
+                    </td>
+                    <td>
+                        @if (item.Score > 0)
+                        {
+                            @item.Score.ToString("0.##")
+                        }
+                        else
+                        {
+                            <span class="text-muted">No Ratings Yet</span>
+                        }
+                    
+                    </td>
+                    <td>
+                        <a asp-action="Edit" asp-route-itemid="@item.Id">Edit</a>
+                        <span>|</span>
+                        <a asp-action="Details" asp-route-itemid="@item.Id">Details</a>
+                        <span>|</span>
+                        <a asp-action="Delete" asp-route-itemid="@item.Id">Delete</a>
+                    </td>
+                </tr>
+            }
+
+        </tbody>
+    </table>
