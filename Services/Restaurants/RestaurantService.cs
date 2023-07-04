@@ -17,8 +17,22 @@ public class RestaurantService : IRestaurantService
         _context = context;
     }
 
-    //Returning a collection of RestaurantListItems
-    public async Task<List<RestaurantListItem>>GetAllRestaurantsAsync()
+    public async Task<bool> CreateRestaurantAsync(RestaurantCreate Model)
+    {
+        //Restaurant made from the Model passed into the method
+        Restaurant entity = new()
+        {
+            Name = Model.Name,
+            Location = Model.Location
+        };
+        //add the restaurant to the DbSet
+        _context.Restaurants.Add(entity);
+
+        //snyc the database with the DbContext, which adds the new Restaurant to the SQL database
+        return await _context.SaveChangesAsync() == 1;
+    }
+  //Returning a collection of RestaurantListItems
+  public async Task<List<RestaurantListItem>>GetAllRestaurantsAsync()
     {
         List<RestaurantListItem> restaurants = await _context.Restaurants
         .Include(r => r.Ratings) //Using Foreign Key by using the Include() method for Ratings Property
@@ -26,10 +40,12 @@ public class RestaurantService : IRestaurantService
         {
             Id = r.Id,
             Name = r.Name,
-            Score = r.AverageRating
+            Score = r.AverageRating ?? 0
         })
         .ToListAsync();//taking the new queried selection and converting into a C# List
 
         return restaurants;
     }
+
+  
 }

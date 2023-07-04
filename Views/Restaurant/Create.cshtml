@@ -1,0 +1,33 @@
+@model RestaurantCreate
+@{
+    ViewData["Title"] = "Create a Restaurant";
+}
+
+<h1>Create a Restaurant</h1>
+<hr>
+@*setting up VIEW to use the notations [Required] and [StringLength()] used in the Create Model*@
+<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+<form asp-action="Create" method="post">
+    <div class="col-md-6">
+        <label asp-for="Name" class="form-label"></label>
+        <input asp-for="Name" class="form-control">
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+    <div class="col-md-6">
+        <label asp-for="Location" class="form-control"></label>
+        <input asp-for="Location" class="form-control">
+        <span asp-validation-for="Location" class="text-danger"></span>
+        <div class="col d-flex justify-content-between align-items-baseline">
+            <a asp-action="Index" class="">Back to List 📃</a>
+            <input type="submit" value="Create" class="btn btn-primary">
+        </div>
+    </div>
+
+</form>
+
+@*added a Script that will execute the validation functionality, using JavaScript to take the ModelState data and apply to the HTML elements created*@
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial")
+    }
+}

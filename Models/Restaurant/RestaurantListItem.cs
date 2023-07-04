@@ -8,5 +8,5 @@ public class RestaurantListItem
     public string? Name { get; set; }
 
    [Display(Name = "Average Score")] 
-   public double? Score { get; set; }
+   public double Score { get; set; }
 }

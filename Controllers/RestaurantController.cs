@@ -20,4 +20,24 @@ public class RestaurantController : Controller
         return View(restaurants);
 
     }
+
+    //A Get endpoint to get the Create View
+    //Create View contains the HTML form that will be used to create Restaurants
+    [HttpGet]
+    public IActionResult Create()
+    {
+        return View();
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> Create(RestaurantCreate model)
+    {
+        if(!ModelState.IsValid)
+        return View(model);
+
+        await _service.CreateRestaurantAsync(model);
+
+        //redirects back to the index view so we can confirm that the new Restaurant had been created
+        return RedirectToAction(nameof(Index));
+    }
 }
