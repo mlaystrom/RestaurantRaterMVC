@@ -10,5 +10,7 @@ public interface IRestaurantService
     //CreateRestaurant 
     Task<bool> CreateRestaurantAsync(RestaurantCreate Model);
 
+    Task<RestaurantDetail?> GetRestaurantAsync(int id);
+
     
 }

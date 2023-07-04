@@ -47,5 +47,24 @@ public class RestaurantService : IRestaurantService
         return restaurants;
     }
 
+    //Restaurant Detail Method
+
+    public async Task<RestaurantDetail?> GetRestaurantAsync(int id)
+    {
+        //1st: retrieve the Restaurant with the given Id from database
+        //Get the DbSet of Restaurants from the database context, then include Ratings, then use FirstOrDefaultAsync() to find the right Restaurant
+        Restaurant? restaurant = await _context.Restaurants
+        .Include(r => r.Ratings)
+        .FirstOrDefaultAsync(r => r.Id == id);
+
+        return restaurant is null ? null : new()
+        {
+            Id = restaurant.Id,
+            Name = restaurant.Name,
+            Location = restaurant.Location,
+            Score = restaurant.AverageRating
+        };
+    }
+
   
 }

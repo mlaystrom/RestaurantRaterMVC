@@ -21,6 +21,18 @@ public class RestaurantController : Controller
 
     }
 
+    //Returning Detail view for a Restaurant
+    [HttpGet]
+    public async Task<IActionResult> Details(int id)
+    {
+        RestaurantDetail? model = await _service.GetRestaurantAsync(id);
+
+        if(model is null)
+        return NotFound();
+
+        return View(model);
+    }
+
     //A Get endpoint to get the Create View
     //Create View contains the HTML form that will be used to create Restaurants
     [HttpGet]
@@ -40,4 +52,6 @@ public class RestaurantController : Controller
         //redirects back to the index view so we can confirm that the new Restaurant had been created
         return RedirectToAction(nameof(Index));
     }
+
+   
 }
