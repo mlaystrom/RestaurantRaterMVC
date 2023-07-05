@@ -31,8 +31,8 @@ public class RestaurantService : IRestaurantService
         //snyc the database with the DbContext, which adds the new Restaurant to the SQL database
         return await _context.SaveChangesAsync() == 1;
     }
-  //Returning a collection of RestaurantListItems
-  public async Task<List<RestaurantListItem>>GetAllRestaurantsAsync()
+    //Returning a collection of RestaurantListItems
+    public async Task<List<RestaurantListItem>> GetAllRestaurantsAsync()
     {
         List<RestaurantListItem> restaurants = await _context.Restaurants
         .Include(r => r.Ratings) //Using Foreign Key by using the Include() method for Ratings Property
@@ -66,5 +66,18 @@ public class RestaurantService : IRestaurantService
         };
     }
 
-  
+    public async Task<bool> UpdateRestaurantAsync(RestaurantEdit model)
+    {
+        Restaurant? entity = await _context.Restaurants.FindAsync(model.Id);
+
+        if (entity is null)
+            return false;
+        //Updating the entity's properties
+        entity.Name = model.Name;
+        entity.Location = model.Location;
+        //number of rows changed ->1
+        return await _context.SaveChangesAsync() == 1;
+    }
+
+
 }

@@ -53,5 +53,39 @@ public class RestaurantController : Controller
         return RedirectToAction(nameof(Index));
     }
 
+    //Edit Method
+    [HttpGet]
+    public async Task<IActionResult> Edit(int id)
+    {
+        RestaurantDetail? restaurant = await _service.GetRestaurantAsync(id);
+        if (restaurant is null)
+        return NotFound();
+
+        RestaurantEdit model = new()
+        {
+        Id = restaurant.Id,
+        Name = restaurant.Name ?? "",
+        Location = restaurant.Location ?? ""
+        };
+
+        return View(model);
+    }
+
+    //HttpPost method that takes in the Id of the Restaurant, as well as the RestaurantEdit model which will contain the new data
+
+    [HttpPost]
+    public async Task<IActionResult> Edit(int id, RestaurantEdit model)
+    {
+        if (!ModelState.IsValid)
+        return View(model);
+    //pass the model to the new service method, if the service return a true and the update passes, return the user to the Detail View
+        if (await _service.UpdateRestaurantAsync(model))
+            return RedirectToAction(nameof(Details), new { id = id });
+
+    //if the Restaurant has failed to update, add a model error for the user and return the user back to the edit user
+        ModelState.AddModelError("Save Error", "Could not update the Restaurant. Please try again.");
+            return View(model);
+    }
+
    
 }

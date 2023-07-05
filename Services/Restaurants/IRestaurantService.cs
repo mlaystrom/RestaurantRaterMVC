@@ -12,5 +12,5 @@ public interface IRestaurantService
 
     Task<RestaurantDetail?> GetRestaurantAsync(int id);
 
-    
+    Task<bool>UpdateRestaurantAsync(RestaurantEdit model);
 }
