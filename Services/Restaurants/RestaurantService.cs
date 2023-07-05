@@ -79,5 +79,23 @@ public class RestaurantService : IRestaurantService
         return await _context.SaveChangesAsync() == 1;
     }
 
+    public async Task<bool> DeleteRestaurantAsync(int id)
+    {
+        Restaurant? entity = await _context.Restaurants.FindAsync(id);
+        
+        if(entity is null)
+            return false;
+
+        //removing associated ratings from the database
+        //done first because of the FK constraint
+        var ratings = await _context.Ratings.Where(r => r.RestaurantId == entity.Id).ToListAsync();
+        _context.Ratings.RemoveRange(ratings);
+        await _context.SaveChangesAsync();
+
+        //tells DbSet to remove the found entity and the changes are then saved to the database and return a boolean that states 1 change made
+        _context.Restaurants.Remove(entity);
+        return await _context.SaveChangesAsync() == 1;
+    }
+
 
 }

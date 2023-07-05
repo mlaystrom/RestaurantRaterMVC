@@ -23,7 +23,7 @@ public class RestaurantController : Controller
 
     //Returning Detail view for a Restaurant
     [HttpGet]
-    public async Task<IActionResult> Details(int id)
+    public async Task<IActionResult> Details(int id)//id being passed through parameter so needs to match with Index.cshtml (@item.Id)
     {
         RestaurantDetail? model = await _service.GetRestaurantAsync(id);
 
@@ -85,6 +85,28 @@ public class RestaurantController : Controller
     //if the Restaurant has failed to update, add a model error for the user and return the user back to the edit user
         ModelState.AddModelError("Save Error", "Could not update the Restaurant. Please try again.");
             return View(model);
+    }
+
+    [HttpGet]
+
+    public async Task<IActionResult> Delete(int id)
+    {
+        RestaurantDetail? restaurant = await _service.GetRestaurantAsync(id);
+        if (restaurant is null)
+            return RedirectToAction(nameof(Index));
+
+        //taking RestaurantDetail model and passing it into the view
+        return View(restaurant);
+
+    }
+
+    [HttpPost]
+    [ActionName(nameof(Delete))]//ActionName connects the method (ConfirmDelete) to the Delete action
+    
+    public async Task<IActionResult> ConfirmDelete(int id)
+    {
+        await _service.DeleteRestaurantAsync(id);
+        return RedirectToAction(nameof(Index));
     }
 
    
