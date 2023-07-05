@@ -19,4 +19,15 @@ html {
 
 body {
   margin-bottom: 60px;
+  background: #8EE4AF;
+  color: #EDF5E1;
+}
+a:hover{
+  color: #EDF5E1;
+  text-decoration: none;
+  
+}
+
+.table{
+  color: #8b8b8a;
 }
