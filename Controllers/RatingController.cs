@@ -20,4 +20,30 @@ public class RatingController : Controller
         List<RatingListItem> model = await _service.GetRatingsAsync();
         return View(model);
     }
+
+//Get method to return the Create view
+//including the REstaurant id as a parameter
+//using the id parameter to create a starting RatingCreate model
+//Once it's created, pass the model to the view
+    [HttpGet]
+    public IActionResult Create(int id)
+    {
+        RatingCreate model = new() { RestaurantId = id};
+        return View(model);
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> Create(RatingCreate model)
+    {
+        if(!ModelState.IsValid)
+        {
+            return View(model);
+        }
+        //if valid, pass the model off to the service
+        //This creates the Rating entity and saves it to the database
+        await _service.CreateRatingAsync(model);
+        //Will return to the index view using RedirectToAction()
+        //redirect to the Restaurant/Details/:id action
+        return RedirectToAction("Details", "Restaurant", new { id = model.RestaurantId});
+    }
 }

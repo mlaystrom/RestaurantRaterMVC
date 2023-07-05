@@ -5,6 +5,10 @@
 
 <h1>@Model.Name</h1>
 <h2>Restaurant Detail</h2>
+<!--Link to add a rating, the anchor tag takes us to the Rating Controller, Create Action and passes Model.Id as route parameter -->
+<a asp-controller="Rating" asp-action="Create" asp-route-id="@Model.Id" class="btn btn-link align-self-center">
+    Add Rating
+</a>
 <hr>
 
 <dl class="row">
