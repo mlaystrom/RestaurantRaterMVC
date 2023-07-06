@@ -46,4 +46,25 @@ public class RatingController : Controller
         //redirect to the Restaurant/Details/:id action
         return RedirectToAction("Details", "Restaurant", new { id = model.RestaurantId});
     }
+
+    [HttpGet]
+    public IActionResult Delete(int id)
+    {
+        RatingListItem model = new() {Id = id, Score = 3}; //what need to replace with a service method call (service.getratingbyid)
+        
+        return View(model);
+    }
+
+    [HttpPost]
+    [ActionName(nameof(Delete))]//ActionName connects the method(ConfirmDelete) to the Delete action
+
+    public async Task<IActionResult> ConfirmDelete(int id)
+    {
+        //passing model off to the Service
+        //This Deletes the Rating and saves to the database
+        await _service.DeleteRatingAsync(id);
+        return RedirectToAction(nameof(Index));
+    }
+
+    
 }

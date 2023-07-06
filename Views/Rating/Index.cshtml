@@ -19,6 +19,9 @@
                 <td>
                     @Html.DisplayFor(_ => item.Score)
                 </td>
+                <td>
+                    <a asp-action="Delete"  asp-route-id="@item.Id">Delete Rating</a>
+                </td>
             </tr>
         }
     </table>

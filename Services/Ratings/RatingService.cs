@@ -30,6 +30,7 @@ public class RatingService : IRatingService
         .Include(r => r.Restaurant)
         .Select(r => new RatingListItem
         {
+            Id = r.Id,
             RestaurantName = r.Restaurant.Name,
             Score = r.Score
         })
@@ -51,6 +52,17 @@ public class RatingService : IRatingService
         .ToListAsync();
 
         return ratings;
+    }
+
+    public async Task<bool> DeleteRatingAsync(int id)
+    {
+        Rating? entity = await _context.Ratings.FindAsync(id);
+        if(entity is null) return false;
+        _context.Ratings.Remove(entity);
+
+    //telling DbSet to remove the found entity
+    //Save changes to the database and return a boolean that states 1 change was made
+        return await _context.SaveChangesAsync() == 1;
     }
 
 }
